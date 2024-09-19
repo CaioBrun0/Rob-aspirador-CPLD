@@ -1,0 +1,40 @@
+module sistema (
+    input wire A, B, D, E, F, T, LE, LD, // Entradas gerais do sistema
+    output wire Frente,                  // Saída Frente
+    output wire FrenteAtras,             // Saída FrenteAtras
+    output wire AtrasFrente              // Saída AtrasFrente
+);
+
+    // Sinais intermediários para conexão entre os módulos
+    wire liga_out1, liga_out2; // Sinais do módulo Ligar
+    wire cond_out1;            // Saída do módulo Conditional
+
+    // Instanciação do módulo Ligar
+    Ligar ligar_inst (
+        .A(A),
+        .B(B),
+        .out1(liga_out1),      // Sinal que pode controlar o Conditional ou Movimentacao
+        .out2(liga_out2)       // Sinal que pode ser usado conforme necessário
+    );
+
+    // Instanciação do módulo Conditional
+    Conditional conditional_inst (
+        .F(F),
+        .LE(LE),
+        .LD(LD),
+        .T(T),
+        .out1(cond_out1)       // Saída que habilita a movimentação
+    );
+
+    // Instanciação do módulo Movimentacao
+    movimentacao movimentacao_inst (
+        .A(A),
+        .D(D),
+        .E(E),
+        .F(F),
+        .Frente(Frente),
+        .FrenteAtras(FrenteAtras),
+        .AtrasFrente(AtrasFrente)
+    );
+
+endmodule
